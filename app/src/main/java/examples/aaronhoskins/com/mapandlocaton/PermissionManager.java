@@ -30,9 +30,7 @@ public class PermissionManager {
 
             } else {
                 // No explanation needed; request the permission
-                ActivityCompat.requestPermissions((Activity)context,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        PERMISSION_INDEX_ID);
+                requestPermission();
             }
         } else {
             manager.onPermissionResult(true);
@@ -40,10 +38,22 @@ public class PermissionManager {
     }
 
     public void requestPermission() {
-
+        ActivityCompat.requestPermissions(
+                (Activity)context,
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSION_INDEX_ID);
     }
 
-    public void permissionResult() {
+    public void permissionResult(int requestCode,
+                                 String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_INDEX_ID: {
+                // If request is cancelled, the result arrays are empty.
+                manager.onPermissionResult(grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+            }
+
+        }
 
     }
 
